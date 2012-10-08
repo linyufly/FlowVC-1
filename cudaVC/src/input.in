@@ -1,0 +1,238 @@
+################################# flowVC INPUT FILE #####################################
+#
+# NOTE: Order of parameters listed must be maintained for proper parsing of input file
+#	Comment lines begin with #, comments can be added or removed as desired
+#	Standard format: VARIABLE_NAME = VALUE
+#
+###################################################################################
+
+# Path_Data: String, Directory containing data files
+# Can be set to pwd (i.e. present working directory)
+Path_Data = /home/yogin/Data/bin/unstructured2D/
+
+# Path_Output: String, Directory where output files will be written
+# Can be set to pwd (i.e. present working directory)
+Path_Output = /home/yogin/Data/Output/unstructured2D/
+
+# Dimensions: Integer, Specifies if velocity data is 2D or 3D
+Dimensions = 2
+
+# Data_MeshType: Integer, Specifies mesh type of velocity data
+# 0: Cartesian
+# 1: Unstructured static mesh (tetrahedral for 3D and triangular for 2D)
+
+Data_MeshType = 1
+
+# Data_InFilePrefix: String, common prefix for input files
+# (e.g. velocity, adjacency, connectivity, coordinate files)
+Data_InFilePrefix = sineflow
+
+# Data_SuffixTMin: Integer, number appended to the name of first velocity data file
+# Assumes naming convention of Data_InFilePrefix_vel.N.bin, where Data_InFilePrefix is
+# specified above and N varies from Data_SuffixTMin
+Data_SuffixTMin = 5380
+
+# Data_SuffixTDelta: Integer, Increment between successive velocity data files
+Data_SuffixTDelta = 10
+
+# Data_SuffixTRes: Integer, number of velocity data files
+Data_SuffixTRes = 200
+
+# Data_TDelta: (Positive) Float, "Real" time spacing between successive velocity data files
+# Assumes time spacing between velocity data files is constant
+Data_TDelta = 0.002
+
+# Data_TMin: Float, Absolute time assigned to first velocity data file
+# Choice is arbitrary, but it usually makes sense to set this to zero, which in that case
+# would mean that the first velocity data file specifies the velocity at time zero
+Data_TMin = 0.0
+
+# Data_TPeriodic: Binary flag, Specifies if data is periodic
+# 0: Not periodic
+# 1: Periodic (make sure first and last data file correspond to same point in cycle)
+Data_TPeriodic = 1
+
+# Data_MeshBounds.XMin, ..., Data_MeshBounds.ZMax: Specifies bounding box of velocity data to consider
+# Can be used to set a region for computing residence times
+Data_MeshBounds.XMin = -100
+Data_MeshBounds.XMax = 100
+Data_MeshBounds.YMin = 0.0
+Data_MeshBounds.YMax = 1.0
+Data_MeshBounds.ZMin = 0.0
+Data_MeshBounds.ZMax = 0.0
+
+
+# Resolution of Velocity Data Files ...
+# Valid only if Data_MeshType = 0 (i.e. for Cartesian Mesh )
+#Data.XRes = 201
+#Data.YRes = 101
+#Data.ZRes = 1
+
+
+
+# Output_TStart: Float, initial time to start simulation and begin writing output
+# If FTLE_Compute: Specifies time at which first FTLE field is generated
+# If Trace_Compute: Specifies start time to begin integrating tracer trajectories and outputing position to file
+Output_TStart = 0.00
+
+# Output_TRes: (Positive) Integer, Desired number of output times
+# If FTLE_Compute: Specifies number of time instances when the FTLE field will be computed and output
+# If Trace_Compute: Specifies number of time instances that tracer positions will be written to file
+Output_TRes = 3
+
+# Output_TDelta: (Positive) Float, Desired time between successive output
+# If FTLE_Compute: How often the FTLE field will be computed and output
+# If Trace_Compute: How often the tracer positions will be output
+Output_TDelta =	0.002
+
+# Int_Type: Integer, specified integration routine used
+# 0: Euler
+# 1: 4th order Runge Kutta
+# 2: Runge Kutta Fehlberg (adaptive time stepping)
+# 3: 2nd order Adams-Bashford (predictor-corrector implementation)
+Int_Type = 1
+
+# Int_TimeStep: (Positive) Float, Time step used for integration Euler or RK4 routines (i.e. Int_Type = 0 or 1)
+# Valid only for Int_Type = 0 or 1
+Int_TimeStep = 0.002
+
+
+
+# Int_TimeDirection: Integer, Should be set to 1 or -1
+#  1: Advect particles forward in time
+# -1: Advect particles backward in time (used to compute backward time FTLE field)
+Int_TimeDirection = 1
+
+
+
+#Int_Extrapolate: Integer, allows particles to be integrated outside of domain of data by extrapolation of data set
+#  0: End integration once particle leaves domain
+#  1: Extrapolate velocity outside domain by continuing particle with exit velocity
+#  2: Linear extrapolation of entire data set
+Int_Extrapolate = 0
+
+
+
+# Trace_Compute: Binary flag
+# 0: Do not compute tracer trajectories
+# 1: Compute tracer trajectories (FTLE_Compute must be 0)
+Trace_Compute = 1
+
+
+# Trace_ReleaseStrategy: Integer flag
+# 0: Traditional release based on launch time parameters below
+# 1: Staggered release based on flow rate
+# Valid only if Trace_Compute = 1 and (currently) for Data_MeshType = 1 and Dimensions = 3
+Trace_ReleaseStrategy = 0
+
+# Trace_ReleaseTMax: (Positive) Float, how long to generate staggered release
+# Valid only if Trace_Compute = 1 and Trace_ReleaseStrategy = 1
+Trace_ReleaseTMax = 0.9
+
+
+# Trace_GenerateMesh: Binary Flag
+# 0: Read in tracer initial positions from a file (specified by Trace_InFile)
+# 1: Generate a Cartesian mesh of tracers to integrate (mesh parameters specified below)
+# Valid only if Trace_Compute = 1 and Trace_ReleaseStrategy = 0
+Trace_GenerateMesh = 1
+
+# Trace_InFile: String, Name of File containing tracer initial positions
+# Valid only if Trace_Compute = 1 and Trace_GenerateMesh = 0
+Trace_InFile = inlet-grid-1mm.bin
+
+# Trace_MultipleInFiles: Binary Flag
+# 0: Default
+# 1: Ensure Trace_NumLaunchTimes is the same as number of input files and Trace_InFile should be prefix
+Trace_MultipleInFiles = 0
+
+# Trace_InFileFormat: Integer, specifies format of Trace_InFile
+# 0: Use this if you want to reuse the .IC file that is generated from flowVC (use with care)
+# 1: ASCII file, first line lists the number of tracers and subsequent lines list the coordinates 
+# 2: ASCII legacy VTK polydata mesh format	
+# 3: ASCII legacy VTK unstructured mesh format
+# 4: Binary file, first entry (int) lists the number of tracers and subsequent entries (doubles) list the coordinates	
+# If set to 1, residence time data will be output as unstructured mesh	
+# Valid only if Compute_Tracers = 1, Trace_ReleaseStrategy = 0 and Trace_GenerateMesh = 0
+Trace_InFileFormat = 4
+
+# Trace_OutFile Format: String, Format of files where tracer position data will be written
+# Formats supported : txt, data, bin and vtk
+# Valid only if 
+#Trace_OutFileFormat = vtk
+
+
+# Trace_OutFile: String, Prefix of files where tracer position data will be written
+# Tracer positions written to separate files for each output time
+# Valid only if Trace_Compute = 1
+Trace_OutFilePrefix = tracerdata
+
+
+# Trace_NumLaunchTimes: (Positive) Integer, Number of times to release tracers from initial positions
+# Valid only if Trace_Compute = 1
+Trace_NumLaunchTimes = 5
+
+# Trace_LaunchTimeSpacing: (Positive) Float, Time between successive release of tracers from starting locations
+# Valid only if Trace_Compute = 1, Trace_ReleaseStrategy = 0 and Trace_NumLaunchTimes > 1 (For Now Make Sure it is greater than or equal to Data_TDelta)
+Trace_LaunchTimeSpacing = 0.001
+
+# Trace_IntTLength: (Positive) Float, Limits amount of time any tracer will be integrated
+# Useful when computing the residence time field at more than one point in time, that is
+# to ensure all releases are integrated the same length of time
+# Valid only if Trace_Compute = 1 and Trace_ReleaseStrategy = 0
+Trace_IntTLength = 1.0
+
+# Trace_AlwaysOutput: Binary Flag
+# 0: Do not write out tracer position to file once it has left the domain
+# 1: Always write out tracer position to file, even if it left the domain
+# Valid only if Trace_Compute = 1
+Trace_AlwaysOutput = 0
+
+# Trace_MeshBounds.XMin, ..., Trace_MeshBounds.ZRes: Specifies Cartesian mesh of tracers to be intergrated
+# Valid only if Trace_Compute = 1 AND Trace_GenerateMesh = 1
+Trace_MeshBounds.XMin = -0.004
+Trace_MeshBounds.XMax = -0.002
+Trace_MeshBounds.YMin = 0.001
+Trace_MeshBounds.YMax = 0.0015
+Trace_MeshBounds.ZMin = 0.0
+Trace_MeshBounds.ZMax = 0.0
+Trace_MeshBounds.XRes = 1
+Trace_MeshBounds.YRes = 1
+Trace_MeshBounds.ZRes = 1
+
+# Memory Usage for Global Search :::
+# Use DRAM(Dynamic Random Access Memory) choose option 0
+# Use Page-locked memory(Pinned Memory) choose option 1
+Memory_Usage_GS = 1
+
+# Memory Usage for Compute_Points :::
+# Use DRAM(Dynamic Random Access Memory) choose option 0
+# Use Page-locked memory(Pinned Memory) choose option 1
+Memory_Usage_MAIN = 1
+
+# GPU device onto which you want to run the code
+# Make sure GPU is attached to the proper device (Default : 0)
+Device_ID = 0
+
+# Do you want to generate frame for initial release
+# If Generate_Frame = 1, it will generate frame for intial tracers.
+# if set to 0, it will read in from a initial file.
+Generate_Frame = 1
+
+# Temp file name. Saves your file in Path_Data folder.
+Temp_OutFilePrefix = tracers
+
+# Keep temp file containing Tracers release data.
+Keep_Tempfile = 1
+
+# Global Searching options:
+# choose option 0 for searching on Host and 1 for searching on GPU ::::
+Searching = 0
+
+# Local Searching options. (only valid if Searching on host)
+# 0: Only use local search protocal to determine elements containing initial
+#    location of material points (fastest)
+# 1: Use global search to check failures of local search (most safe, but can be very slow)
+# Valid only if Data_MeshType = 1
+LocalSearchChecking = 0
+
+

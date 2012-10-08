@@ -1,0 +1,20 @@
+
+
+Steps to be taken:
+
+
+1) Creating the basic OpenCL run-time environment.
+->	Includes: Platform, Device, context and command Queue.
+
+2) Allocating memory.
+
+3) The Program and the Kernels
+->	Includes: creating program and reading kernels from file and building them.
+
+4) Launching the kernel
+
+5) Reading memory back
+
+6) free the memory.
+
+

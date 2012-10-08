@@ -1,0 +1,47 @@
+################################# flowVC INPUT FILE #####################################
+#
+# NOTE: Order of parameters listed must be maintained for proper parsing of input file
+#	Comment lines begin with #, comments can be added or removed as desired
+#	Standard format: VARIABLE_NAME = VALUE
+#
+###################################################################################
+
+# Path_Data: String, Directory containing data files. [ Output of flowVC ]
+# Can be set to pwd (i.e. present working directory)
+Path_Data1 = /home/yogin/Data/Output/unstructured2D/
+
+# Path_Data: String, Directory containing data files [ Output of cudaVC ]
+# Can be set to pwd (i.e. present working directory)
+Path_Data2 = /home/yogin/Data/Output/unstructured2D/
+
+# Path_Output: String, Directory where output files will be written
+# Can be set to pwd (i.e. present working directory)
+Path_Output = /home/yogin/Data/Output/unstructured2D/
+
+# Data_MeshType: Integer, Specifies mesh type of velocity data
+# 0: Cartesian
+# 1: Unstructured static mesh (tetrahedral for 3D and triangular for 2D)
+
+Data_MeshType = 1
+
+
+# Suffix_TMin: int, First File Suffix
+Suffix_TMin = 0
+
+# Suffix_TMax: int, Last File Suffix
+Suffix_TMax = 10
+
+# Suffix_TDelta: int, Difference between two file's suffix
+Suffix_TDelta = 1
+
+
+# Trace_OutFile: String, Prefix of files where tracer position data are stored. This refers to the file prefix of output files generated from flowVC.
+
+FlowVC_OutFilePrefix1 = tracer_gridflowvc
+
+# Trace_OutFile: String, Prefix of files where tracer position data are stored. This refers to the file prefix of output files generated from cudaVC.
+
+CudaVC_OutFilePrefix2 = tracerdata
+
+
+

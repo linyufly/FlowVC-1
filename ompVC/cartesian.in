@@ -1,0 +1,369 @@
+############################### flowVC INPUT FILE #####################################
+#
+# NOTE: Order of parameters listed must be maintained for proper parsing of input file
+# Comment lines begin with #, comments can be added or removed as desired
+# Standard format: VARIABLE_NAME = VALUE
+#
+#######################################################################################
+
+# Path_Data: String, Directory containing input data files
+# Can be set to pwd
+Path_Data = /home/yogin/Data/bin/cartesian2D/
+
+# Path_Output: String, Directory where output files will be written
+# Can be set to pwd
+Path_Output = /home/yogin/Data/Output/cartesian2D/
+
+# Dimensions: Integer, Specifies dimension of velocity data (must be 2 or 3)
+Dimensions = 2
+
+# Data_MeshType: Binary flag, used to specify mesh type of velocity data
+# 0: Cartesian
+# 1: Unstructured (tetrahedral for 3D and triangular for 2D)
+Data_MeshType = 0
+
+# Data_InFilePrefix: String, common prefix for input files
+# (e.g. files related to velocity field information)
+Data_InFilePrefix = dg
+
+# Data_SuffixTMin: Integer, Suffix of first velocity data file
+# Assumes naming convention of Data_InFilePrefix_vel.#.bin, where Data_InFilePrefix is
+# specified above and # varies from Suffix_TMin  
+Data_SuffixTMin = 0
+
+# Data_SuffixTDelta: Integer, Increment between # for successive velocity data files
+Data_SuffixTDelta = 1
+
+# Data_TRes: Integer, number of velocity data files
+Data_TRes = 51
+
+# Data_TDelta: Float, Real time between successive velocity data files
+Data_TDelta = 0.02
+
+# Data_TMin: Float, Real time assigned to first velocity data file
+# If set to 0.0 this just means that first velocity data file corresponds to time zero
+Data_TMin = 0.0
+
+# Data_TPeriodic: Binary flag, Specifies if data is periodic in time (NOTE: assumes first and last file correspond to
+# SAME point in cycle)
+# 0: Not periodic
+# 1: Periodic
+Data_TPeriodic = 1
+
+# Data_MeshBounds.XMin, ..., Data_MeshBounds.ZMax: Specifies bounding box of velocity data to consider
+# Can be used to specify Residence Time region
+Data_MeshBounds.XMin = 0.0
+Data_MeshBounds.XMax = 2.0
+Data_MeshBounds.YMin = 0.0
+Data_MeshBounds.YMax = 2.0
+Data_MeshBounds.ZMin = 0.0
+Data_MeshBounds.ZMax = 0.0
+
+# Fluid_Density: Float, specifies fluid density (use consistent units)
+# Valid only if Particle_Radius > 0
+Fluid_Density = 1.0
+
+# Fluid_Viscosity: Float, specifies fluid viscosity (use consistent units)
+# Valid only if Particle_Radius > 0
+Fluid_Viscosity = 1.0
+
+# NOTE: flte is function of space x, time t, and integration interval T, i.e. ftle(x,t,T)
+# Output parameters specify at which t you want to know what the FTLE field looks like (T is set by FTLE_IntTLength below)
+
+# Output_TMin: Float, when to begin generating output
+# If FTLE_Compute: Specifies time for first FTLE field
+# If Trace_Compute: Specifies start time to begin integrating tracer positions
+Output_TStart = 0.0
+
+# Output_TRes: Integer, Desired number of output times
+# If FTLE_Compute: Specifies number of time instances when FTLE will be computed  
+# If Trace_Compute: Specifies number of time instances that tracer positions will be output to file
+Output_TRes = 11
+
+# Output_TDelta: Float, Desired time between successive output
+# If FTLE_Compute: How often the FTLE field will be computed
+# If Trace_Compute: How often the tracer positions will be written to the output file
+Output_TDelta = 0.1
+
+# Int_Type: Integer, specified integration routine
+# 0: Euler (current implementation has integration default to this if Particle_Radius > 0)
+# 1: 4th order Runge Kutta
+# 2: Runge Kutta Fehlberg
+Int_Type = 1
+
+# Int_TimeStep: Float, time step used for integration routines 0 and 1
+# Valid only for Int_Type = 0 or 1
+Int_TimeStep = 0.001
+
+# Int_Accuracy: Float, Absolute error tolorance between RK4 and RK5 results needed to accept RK4 result used in RKF routine
+# Valid only for Int_Type = 2
+Int_Accuracy = 0.0001
+
+# Int_MinTimeStep: Float, Minimum allowable time step used in RKF routine
+# Once this time step is reached, RK4 approximation automatically accepted
+# Valid only for Int_Type = 2
+Int_MinTimeStep = 0.0001
+
+# Int_MaxTimeStep: Float, Maximum allowable time step used in RKF routine
+# Used as initial guess for suitable time step when RKF routine is called
+# Time step will not be increased beyond this limit even if error between RK4 and RK5 less than Int_Accuracy
+# Valid only for Int_Type = 2
+Int_MaxTimeStep = 0.001
+
+# Int_TimeDirection: Should be set to 1 or -1
+#  1: Advect particles forward in time (Always use if Trace_Compute = 1)
+# -1: Advect particles backward in time (Use to compute backward time FTLE field)
+Int_TimeDirection = 1
+
+# Int_NormalFlow: Binary flag
+# 0: No changes made
+# 1: Replace zero velocity on no-slip boundary with inward velocity with magnitude set to
+# NormalFlowScaling specified below
+# Valid only for Data_MeshType = 1
+Int_NormalFlow = 0
+
+# Int_NormalFlowScaling, Float, Scaling for inward pointing boundary velocity (to prevent tracers from escaping
+# through solid boundary)
+# Valid only for Data_MeshType = 1 and Int_NormalFlow = 1
+Int_NormalFlowScaling = 100.0
+
+# Extrapolate velocity outside domain
+Int_Extrapolate = 0
+
+# Particle_Radius: Float, Radius of all things treated as Lagrangian points
+# Set to zero if you want points to behave as perfect tracers
+Particle_Radius = 0.0
+
+# Particle_Density: Float, Mass density of all things treated as Lagrangian points
+# Respectively, set =, >, or < fluid density for neutrally bouyant, aerosols, or bubbles
+# Only valid if Particle_Radius > 0
+Particle_Density = 1.0
+
+# Particle_ICType: Int, Specified type of initial condition assigned to particles
+# 0: Start particles from rest
+# 1: Start particles with velocity equal to fluid velocity at particle release location
+# Valid only if Particle_Radius > 0
+Particle_ICType = 0
+
+# Gravity_Vector[i]: Floats, Specifies components of gravity vector (use consistent units)
+# Valid only if Particle_Radius > 0
+Gravity_Vector[0] = 0.0
+Gravity_Vector[1] = 0.0
+Gravity_Vector[2] = 0.0
+
+# Local_Search_Checking: Binary flag
+# 0: Only use local search protocal to determine elements containing initial
+#    location of material points (fastest)
+# 1: Use global search to check failures of local search (most safe, but can be very slow)
+# Valid only if Data_MeshType = 1
+LocalSearchChecking = 1
+
+# Number of Threads on processor (on which you want to run the ompflowVC code)
+Num_threads = 0
+
+# FTLE_Compute: Binary flag
+# 0: Do not compute FTLE fields
+# 1: Compute FTLE fields (Trace_Compute must be 0)
+FTLE_Compute = 0
+
+# FTLE_GenerateMesh: Binary flag
+# 0: Read in FTLE array from file FTLE_ICFile
+# 1: Generate a structured grid of FTLE tracers to advect using parameters below, the save data in FTLE_ICFile
+# Valid only if FTLE_Compute = 1
+FTLE_GenerateMesh = 1
+
+# FTLE_ICFile: String, Filename storing FTLE tracer IC
+# If FTLE_GenerateMesh = 0, this file should be located in Path_Work directory
+# If FTLE_GenerateMesh = 0, this file will be written to Path_Work directory
+# Valid only if FTLE_Compute = 1
+FTLE_ICFile = ftFTLE_IC.bin
+
+# FTLE_MeshBounds.XMin, ..., FTLE_MeshBounds.ZRes: Specifies structured grid over which FTLE is computed
+# Valid only if FTLE_Compute = 1
+FTLE_MeshBounds.XMin = 0.0
+FTLE_MeshBounds.XMax = 2.0
+FTLE_MeshBounds.YMin = 0.0
+FTLE_MeshBounds.YMax = 1.0
+FTLE_MeshBounds.ZMin = 0.0
+FTLE_MeshBounds.ZMax = 0.0
+FTLE_MeshBounds.XRes = 201
+FTLE_MeshBounds.YRes = 101
+FTLE_MeshBounds.ZRes = 1
+
+# FTLE_IntTimeLength: Float, Integration time used to compute FTLE
+# Valid only if FTLE_Compute = 1
+FTLE_IntTLength = 0.3
+
+# FTLE_ComputeVariation: Binary flag
+# 0: Compute FTLE at each output time with integration time set to FTLE_IntTimeLength
+# 1: Compute variation of FTLE with integration time IMPORTANT: Must set Output_TRes = 1
+# Valid only if FTLE_Compute = 1
+FTLE_ComputeVariation = 0
+
+# FTLE_VariationOutFreq: Integer, controls how often FTLE is output when computing FTLE variation
+# Valid only if FTLE_ComputeVariation = 1
+# FTLE variation computed at instances when velocity data exists
+# FTLE_VariationOutFreq specifies number of velocity time steps to skip when outputing FTLE variation
+FTLE_VariationOutFreq = 10
+
+# FTLE_OutFilePrefix: String, Filename prefix where FTLE output data is written
+# If set to repatt, then filename is standardized to FTLErep if Int_TimeDirection = 1 and FTLEatt if Int_TimeDirection = -1
+# Valid only if FTLE_Compute = 1
+FTLE_OutFilePrefix = dg_ftFTLE
+
+# Trace_Compute: Binary flag
+# 0: Do not compute tracer trajectories
+# 1: Compute tracer trajectories or residence time (FTLE_Compute must be 0)
+Trace_Compute = 1
+
+# Trace_ReleaseStrategy: Integer flag
+# 0: Traditional release based on launch time parameters below
+# 1: Staggered release based on flow rate
+# Valid only if Trace_Compute = 1
+Trace_ReleaseStrategy = 0
+
+# Trace_ReleaseTMax: Float, how long to generate staggered release
+# Valid only if Trace_Compute = 1 and Trace_ReleaseStrategy = 1
+Trace_ReleaseTMax = 0.9
+
+# Trace_GenerateMesh: Binary Flag
+# 0: Read in tracer grid from file specified by Trace_InFile
+# 1: Generate a Cartesian grid of tracers to advect
+# Valid only if Trace_Compute = 1 and Trace_ReleaseStrategy = 0
+Trace_GenerateMesh = 1
+
+# Trace_InFile: String, Filename containing list of tracers to be integrated
+# Valid only if Trace_Compute = 1 AND Trace_GenerateMesh = 0
+Trace_InFile = InflowFace.bin
+
+# Set this to 1
+Trace_MultipleInFiles = 0
+
+# Trace_InFileFormat: Integer, specified format of Trace_InFile
+# 0: Use this if you want to reuse the .IC file that is generated from flowVC (use with care)
+# 1: ASCII file, first line lists the number of tracers and subsequent lines list the coordinates
+# 2: ASCII legacy VTK polydata mesh format (as output from Paraview)
+# 3: ASCII legacy VTK unstructured mesh format (as output from Paraview)
+# If set to 1, residence time data will be output as unstructured mesh
+# Valid only if Compute_Tracers = 1, Trace_ReleaseStrategy = 0 and Trace_GenerateMesh = 0
+Trace_InFileFormat = 1
+
+
+# Trace_OutFilePrefix: String, Prefix for files where tracer position data is written
+# Tracer positions written to separate files for each output time
+# Valid only if Trace_Compute = 1
+
+Trace_OutFilePrefix = tracer_grid
+
+# Trace_NumLaunchTimes: Integer, Number of times to release tracers from their starting location
+# Starting locations defined by Trace_InFile or Trace_MeshBounds (defined below) depending on
+# Trace_GenerateMesh flag
+# Valid only if Trace_Compute = 1 and Trace_ReleaseStrategy = 0
+Trace_NumLaunchTimes = 1 #1
+
+# Trace_LaunchTimeSpacing: Float, Time between successive release of tracers from starting locations
+# Starting locations defined by Trace_InFile or Trace_MeshBounds (defined below) depending on
+# Trace_GenerateMesh flag
+# Valid only if Trace_Compute = 1, Trace_ReleaseStrategy = 0 and Trace_NumLaunchTimes > 1
+Trace_LaunchTimeSpacing = 0.010
+
+# Trace_IntTLength: Float, Can be used to limits amount of time any tracer will be integrated
+# Otherwise limite is set by Output_TMax (bascially used to integrate some tracers less than Output_TMax)
+# Valid only if Trace_Compute = 1 and Trace_ReleaseStrategy = 0
+Trace_IntTLength = 3.0 #1.0
+
+# Trace_AlwaysOutput: Binary Flag
+# 0: Do not write out tracer positions to file once they leave the domain
+# 1: Always write tracer positions to file, even if they leave domain
+# Valid only if Trace_Compute = 1
+Trace_AlwaysOutput = 0
+
+# Trace_MeshBounds.XMin, ..., Trace_MeshBounds.ZRes: Specifies structured grid of tracers to be intergrated
+# Valid only if Trace_Compute = 1 AND Trace_GenerateMesh = 1
+Trace_MeshBounds.XMin = 0.00 #0.00
+Trace_MeshBounds.XMax = 2.00 #0.01
+Trace_MeshBounds.YMin = 0.00 #0.000
+Trace_MeshBounds.YMax = 1.00 #0.0025
+Trace_MeshBounds.ZMin = 0.0
+Trace_MeshBounds.ZMax = 0.0
+Trace_MeshBounds.XRes = 201
+Trace_MeshBounds.YRes = 101
+Trace_MeshBounds.ZRes = 1
+
+# Trace_APCompute: Binary flag
+# 1: Compute activation potential (integrated strain rate) for each particle.
+#    Requires Data_InFilePrefix_strain-rate.#.bin files.
+# 0: Do not compute
+# Valid only if Tracer_Compute = 1
+Trace_APCompute = 0
+
+# Trace_ComputeCET: Binary flag
+# 1: Compute cumulative/mean exposure times for tracers being advected
+# 0: Do not compute
+# Valid only if Tracer_Compute = 1 and Trace_ComputeRT must be 0  
+Trace_ComputeCET = 0
+
+# Trace_CETAuxillaryMesh: Binary flag
+# 1: Use an auxillary mesh for CET computations, specificed by Trace_CETAuxillaryMeshPrefix
+# 0: Use velocity field mesh for CET computations
+# Valid only for Trace_Compute = 1 and Trace_ComputeCET = 1
+Trace_CETAuxillaryMesh = 0
+
+# Trace_CETAuxillaryMeshPrefix: String
+# Prefix for files containing coordinates, connectivity and adjacency data for auxillary mesh
+Trace_CETAuxillaryMeshPrefix = aux_mesh
+
+# Trace_CETSubsteps: Integer, numer of intervals used to discretize
+# CET contributions when particle path intersects multiple elements during
+# single integration step.
+# Valid only for Tracer_Compute = 1 and Trace_ComputeCET = 1
+Trace_CETSubsteps = 50  
+
+# Trace_ComputeRT: Binary flag
+# 1: Compute residence time of tracers
+# 0: Do not compute residence time
+# Will compute output for Trace_NumLaunchTimes
+# Valid only if Tracer_Compute = 1 and Trace_ComputeCET must be 0  
+Trace_ComputeRT = 0
+
+# RT_OutFilePrefix: String, Filename prefix for residence time computations
+# Valid only if Trace_Compute = 1 and Trace_ComputeCET = 1 or Trace_ComputeRT = 1  
+Trace_RTOutFilePrefix = resid_times
+
+# VelOut_Compute: Binary flag, Can be used to compute and output interpolated velocity field
+# 0: Do not output interpolated velocity fields
+# 1: Output interploated velocity fields
+VelOut_Compute = 0
+
+# VelOut_GenerateMesh: Binary flag
+# 0: Read interpolation locations from file specified by Trace_InFile
+# 1: Generate a structured grid of points (specified below) where velocity will be interpolated
+VelOut_GenerateMesh = 1
+
+# VelOut_InFile: String, filename containing locations of points for interpolation
+# Valid only for VelOut_Compute = 1 and VelOut_GenerateMesh = 0
+VelOut_InFile = velin.vtk
+
+# VelOut_InFileFormat, Integer, specified format of VelOut_InFile
+# 1: ASCII file, first line lists the number of locations and subsequent lines list the coordinates
+# 3: ASCII legacy VTK polydata mesh format (as output from Paraview)
+# 4: ASCII legacy VTK unstructured mesh format (as output from Paraview)
+# Valid only if VelOut_Compute = 1 AND VelOut_GenerateMesh = 0
+VelOut_InFileFormat = 2
+
+# Plot_OutFile: String, Filename that velocity output is written to
+# Velocity output written to separate files, one per output time, with this string as common prefix
+# Valid only if Plot_Velocity = 1
+VelOut_FilePrefix = velout
+
+# VelOut_MeshBounds.XMin, ..., VelOut_MeshBounds.ZRes: Sets Cartesian grid over which velocity is sampled
+# Valid only if VelOut_Compute = 1
+VelOut_MeshBounds.XMin = 0.0
+VelOut_MeshBounds.XMax = 2.0
+VelOut_MeshBounds.YMin = 0.0
+VelOut_MeshBounds.YMax = 1.0
+VelOut_MeshBounds.ZMin = 0.0
+VelOut_MeshBounds.ZMax = 0.0
+VelOut_MeshBounds.XRes = 150
+VelOut_MeshBounds.YRes = 75
+VelOut_MeshBounds.ZRes = 1
