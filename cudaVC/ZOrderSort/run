@@ -1,0 +1,1 @@
+./main data/P2AAA/testbin/Patient2Rest_coordinates.bin data/P2AAA/testbin/Patient2Rest_connectivity.bin data/P2AAA/testbin/Patient2Rest_adjacency.bin data/P2AAA/testbin/Patient2Rest_vel 3040 4040 40

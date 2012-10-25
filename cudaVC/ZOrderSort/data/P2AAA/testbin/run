@@ -1,0 +1,1 @@
+./main Patient2Rest_coordinates.bin Patient2Rest_connectivity.bin Patient2Rest_adjacency.bin Patient2Rest_vel 3040 4040 40
