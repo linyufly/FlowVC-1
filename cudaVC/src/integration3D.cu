@@ -300,7 +300,7 @@ void ComputePoints_Unstructured3D(double tmin, double tmax, int N1, double Data_
 			stage[1] = (0.5 * h);
 		
 			// Memcpy of constant memory
-			err = cudaMemcpyToSymbol( "stageconst", stage, 2*sizeof(double), 0, cudaMemcpyHostToDevice);
+			err = cudaMemcpyToSymbol( stageconst, &stage, 2*sizeof(double), 0, cudaMemcpyHostToDevice);
 			if(err != cudaSuccess) {
 					fprintf(stderr, "Memory copy from Host to Device constant stage failed\n");
 					printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -335,7 +335,7 @@ void ComputePoints_Unstructured3D(double tmin, double tmax, int N1, double Data_
 			stage[1] = (0.5 * h);
 	
 			// Memcpy of constant memory
-			err = cudaMemcpyToSymbol( "stageconst", stage, 2*sizeof(double), 0, cudaMemcpyHostToDevice);
+			err = cudaMemcpyToSymbol( stageconst, &stage, 2*sizeof(double), 0, cudaMemcpyHostToDevice);
 			if(err != cudaSuccess) {
 					fprintf(stderr, "Memory copy from Host to Device constant stage failed\n");
 					printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -373,7 +373,7 @@ void ComputePoints_Unstructured3D(double tmin, double tmax, int N1, double Data_
 			stage[1] = (h);
 		
 			// Memcpy of constant memory
-			err = cudaMemcpyToSymbol( "stageconst", stage, 2*sizeof(double), 0, cudaMemcpyHostToDevice);
+			err = cudaMemcpyToSymbol( stageconst, &stage, 2*sizeof(double), 0, cudaMemcpyHostToDevice);
 			if(err != cudaSuccess) {
 					fprintf(stderr, "Memory copy from Host to Device constant stage failed\n");
 					printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -411,7 +411,7 @@ void ComputePoints_Unstructured3D(double tmin, double tmax, int N1, double Data_
 			stage[1] = (h);
 		
 			// Memcpy of constant memory
-			err = cudaMemcpyToSymbol( "stageconst", stage, 2*sizeof(double), 0, cudaMemcpyHostToDevice);
+			err = cudaMemcpyToSymbol( stageconst, &stage, 2*sizeof(double), 0, cudaMemcpyHostToDevice);
 			if(err != cudaSuccess) {
 					fprintf(stderr, "Memory copy from Host to Device constant stage failed\n");
 					printf("CUDA Error: %s \n\n", cudaGetErrorString(err));

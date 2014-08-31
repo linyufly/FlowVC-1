@@ -97,7 +97,7 @@ XX_host[1] = Vel_CartMesh.XMax;
 XX_host[2] = (1/Vel_CartMesh.XDelta);
 
 // Memcpy of constant memory
-err = cudaMemcpyToSymbol( "XX", XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
+err = cudaMemcpyToSymbol( XX, &XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
 if(err != cudaSuccess) {
 fprintf(stderr, "Memory copy from Host to Device constant XX failed\n");
 printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -110,7 +110,7 @@ XX_host[1] = Vel_CartMesh.YMax;
 XX_host[2] = (1/Vel_CartMesh.YDelta);
 
 // Memcpy of constant memory
-err = cudaMemcpyToSymbol( "YY", XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
+err = cudaMemcpyToSymbol( YY, &XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
 if(err != cudaSuccess) {
 fprintf(stderr, "Memory copy from Host to Device constant YY failed\n");
 printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -123,7 +123,7 @@ XX_host[1] = Vel_CartMesh.ZMax;
 XX_host[2] = (1/Vel_CartMesh.ZDelta);
 
 // Memcpy of constant memory
-err = cudaMemcpyToSymbol( "ZZ", XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
+err = cudaMemcpyToSymbol( ZZ, &XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
 if(err != cudaSuccess) {
 fprintf(stderr, "Memory copy from Host to Device constant ZZ failed\n");
 printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -138,7 +138,7 @@ Res_host[1] = Vel_CartMesh.YRes;
 Res_host[2] = Vel_CartMesh.ZRes;
 
 // Memcpy of constant memory
-err = cudaMemcpyToSymbol( "RES", Res_host, 3 * sizeof(int), 0, cudaMemcpyHostToDevice);
+err = cudaMemcpyToSymbol( RES, &Res_host, 3 * sizeof(int), 0, cudaMemcpyHostToDevice);
 if(err != cudaSuccess) {
 fprintf(stderr, "Memory copy from Host to Device constant RES failed\n");
 printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -152,7 +152,7 @@ XX_host[1] = Data_MeshBounds.XMax;
 XX_host[2] = Data_MeshBounds.XDelta;
 
 // Memcpy of constant memory
-err = cudaMemcpyToSymbol( "XX_Data", XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
+err = cudaMemcpyToSymbol( XX_Data, &XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
 if(err != cudaSuccess) {
 fprintf(stderr, "Memory copy from Host to Device constant XX_Data failed\n");
 printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -165,7 +165,7 @@ XX_host[1] = Data_MeshBounds.YMax;
 XX_host[2] = Data_MeshBounds.YDelta;
 
 // Memcpy of constant memory
-err = cudaMemcpyToSymbol( "YY_Data", XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
+err = cudaMemcpyToSymbol( YY_Data, &XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
 if(err != cudaSuccess) {
 fprintf(stderr, "Memory copy from Host to Device constant YY_Data failed\n");
 printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -178,7 +178,7 @@ XX_host[2] = Data_MeshBounds.ZDelta;
 
 
 // Memcpy of constant memory
-err = cudaMemcpyToSymbol( "ZZ_Data", XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
+err = cudaMemcpyToSymbol( ZZ_Data, &XX_host, 3 * sizeof(double), 0, cudaMemcpyHostToDevice);
 if(err != cudaSuccess) {
 fprintf(stderr, "Memory copy from Host to Device constant ZZ_Data failed\n");
 printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -193,7 +193,7 @@ Res_host[1] = Data_MeshBounds.YRes;
 Res_host[2] = Data_MeshBounds.ZRes;
 
 // Memcpy of constant memory
-err = cudaMemcpyToSymbol( "RES_Data", Res_host, 3 * sizeof(int), 0, cudaMemcpyHostToDevice);
+err = cudaMemcpyToSymbol( RES_Data, &Res_host, 3 * sizeof(int), 0, cudaMemcpyHostToDevice);
 if(err != cudaSuccess) {
 fprintf(stderr, "Memory copy from Host to Device constant RES_Data failed\n");
 printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -264,7 +264,7 @@ const size_t ssize = sizeof(float) * size_t(CONSTANT_MEMORY);
 
 
 // Memcpy of constant memory
-err = cudaMemcpyToSymbol( "x_dev", x_host, ssize, 0, cudaMemcpyHostToDevice);
+err = cudaMemcpyToSymbol( x_dev, &x_host, ssize, 0, cudaMemcpyHostToDevice);
 if(err != cudaSuccess) {
 fprintf(stderr, "Memory copy from Host to Device constant x_dev failed\n");
 printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -272,7 +272,7 @@ fprintf(stderr, " \n\n");
 exit(1);
 }
 
-err = cudaMemcpyToSymbol( "y_dev", y_host, ssize,0, cudaMemcpyHostToDevice);
+err = cudaMemcpyToSymbol( y_dev, &y_host, ssize,0, cudaMemcpyHostToDevice);
 if(err != cudaSuccess) {
 fprintf(stderr, "Memory copy from Host to Device constant y_dev failed\n");
 printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
@@ -282,7 +282,7 @@ exit(1);
 
 if (Dimensions == 3) {
 
-err = cudaMemcpyToSymbol( "z_dev", z_host, ssize, 0 ,cudaMemcpyHostToDevice );
+err = cudaMemcpyToSymbol( z_dev, &z_host, ssize, 0 ,cudaMemcpyHostToDevice );
 if(err != cudaSuccess) {
 fprintf(stderr, "Memory copy from Host to Device constant z_dev failed\n");
 printf("CUDA Error: %s \n\n", cudaGetErrorString(err));

@@ -75,7 +75,7 @@ void computePoints_AdamsBashford2(double tmin, double tmax, int N1, double Data_
 
 		
 			// Memcpy of constant memory
-			err = cudaMemcpyToSymbol( "tlocation", tloc, 2*sizeof(double), 0, cudaMemcpyHostToDevice);
+			err = cudaMemcpyToSymbol( tlocation, &tloc, 2*sizeof(double), 0, cudaMemcpyHostToDevice);
 			if(err != cudaSuccess) {
 					fprintf(stderr, "Memory copy of constant variable (tloc) from Host to Device failed\n");
 					printf("CUDA Error: %s \n\n", cudaGetErrorString(err));
